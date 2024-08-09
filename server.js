@@ -10,6 +10,7 @@ const friendRoutes = require('./routes/friend');
 const messageRoutes = require('./routes/messageroute');
 const chatRoutes = require('./routes/chat');
 const notificationRoutes = require('./routes/notification');
+const userRoutes = require('./routes/user');
 const { mongoURI, sessionSecret } = require('./config');
 
 const app = express();
@@ -30,7 +31,7 @@ app.use('/api/chat', chatRoutes);
 app.use('/api/friend', friendRoutes);
 app.use('/api/message', messageRoutes);
 app.use('/api/notification', notificationRoutes);
-
+app.use('/api/user', userRoutes); 
 mongoose.connect(mongoURI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
