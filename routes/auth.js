@@ -54,7 +54,7 @@ router.get("/me", async (req, res) => {
         .populate({
           path: 'friendRequests',
           populate: {
-            path: 'fromUser',  // Populate fromUser details
+            path: 'fromUser',
             model: 'User',
             select: 'userId bio profilePicture online lastSeen'  // Include fields to return
           }
@@ -68,6 +68,7 @@ router.get("/me", async (req, res) => {
     res.status(401).json({ message: "Not authenticated" });
   }
 });
+
 
 
 
