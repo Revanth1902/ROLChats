@@ -48,9 +48,23 @@ app.use((req, res, next) => {
 io.on('connection', (socket) => {
   console.log('a user connected');
 
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
+  // When user connects
+  socket.on('userConnected', async (userId) => {
+    await User.findByIdAndUpdate(userId, { online: true });
+    socket.userId = userId;
+    console.log(`User ${userId} is online`);
   });
+
+  // When user disconnects
+  socket.on('disconnect', async () => {
+    console.log('user disconnected');
+
+    if (socket.userId) {
+      await User.findByIdAndUpdate(socket.userId, { online: false, lastSeen: new Date() });
+      console.log(`User ${socket.userId} is offline`);
+    }
+  });
+
 
   socket.on('sendMessage', (data) => {
     const message = new Message(data);

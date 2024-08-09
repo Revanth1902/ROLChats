@@ -47,13 +47,17 @@ router.get("/me", async (req, res) => {
   if (req.session.userId) {
     try {
       const user = await User.findById(req.session.userId)
-        .populate("friends", "userId bio profilePicture online lastSeen")
         .populate({
-          path: "friendRequests",
+          path: 'friends',
+          select: 'userId bio profilePicture online lastSeen'
+        })
+        .populate({
+          path: 'friendRequests',
           populate: {
-            path: "fromUser",
-            select: "userId bio profilePicture online lastSeen",
-          },
+            path: 'fromUser',
+            model: 'User',
+            select: 'userId bio profilePicture online lastSeen',
+          }
         });
 
       res.json(user);
@@ -64,5 +68,6 @@ router.get("/me", async (req, res) => {
     res.status(401).json({ message: "Not authenticated" });
   }
 });
+
 
 module.exports = router;
