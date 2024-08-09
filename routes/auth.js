@@ -42,14 +42,20 @@ router.post('/logout', (req, res) => {
 });
 
 // Check Authentication
-router.get('/me', (req, res) => {
+router.get('/me', async (req, res) => {
   if (req.session.userId) {
-    User.findById(req.session.userId)
-      .then(user => res.json(user))
-      .catch(err => res.status(500).json({ error: err.message }));
+    try {
+      const user = await User.findById(req.session.userId)
+        .populate('friends', 'userId bio profilePicture online lastSeen')
+        .populate('friendRequests', 'userId bio profilePicture online lastSeen');
+      res.json(user);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
   } else {
     res.status(401).json({ message: 'Not authenticated' });
   }
 });
+
 
 module.exports = router;

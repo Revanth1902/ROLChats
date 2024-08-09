@@ -19,7 +19,7 @@ router.post('/send', async (req, res) => {
     const request = new FriendRequest({ fromUser: fromUser._id, toUser: toUser._id });
     await request.save();
 
-    toUser.friendRequests.push(fromUser._id);
+    toUser.friendRequests.push(request._id);
     await toUser.save();
 
     // Send notification to the recipient
@@ -37,5 +37,6 @@ router.post('/send', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 module.exports = router;
