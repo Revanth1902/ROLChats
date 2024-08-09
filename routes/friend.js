@@ -22,14 +22,6 @@ router.post('/send', async (req, res) => {
     toUser.friendRequests.push(request._id);
     await toUser.save();
 
-    const notification = new Notification({
-      userId: toUser._id,
-      message: `${fromUserId} sent you a friend request`
-    });
-    await notification.save();
-
-    req.io.to(toUser._id.toString()).emit('receiveNotification', notification);
-
     res.status(201).json({ message: 'Friend request sent' });
   } catch (err) {
     res.status(500).json({ error: err.message });

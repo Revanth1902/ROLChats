@@ -6,11 +6,10 @@ const UserSchema = new mongoose.Schema({
   bio: { type: String, default: '' },
   friendCount: { type: Number, default: 0 },
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  friendRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'FriendRequest' }], // Ensure this references FriendRequest IDs
+  friendRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'FriendRequest' }], // Reference to FriendRequest
   lastSeen: { type: Date, default: Date.now },
   profilePicture: { type: String, default: 'defaultProfilePic.jpg' },
   online: { type: Boolean, default: false }
 });
-
 
 module.exports = mongoose.model('User', UserSchema);
